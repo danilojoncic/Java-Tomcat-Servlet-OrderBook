@@ -167,7 +167,9 @@ public class FoodServlet extends HttpServlet {
                 }
                 chsFood.append("</h2>");
                 resp.setContentType("text/html");
-                MealUtility.sessions.add(session);
+                synchronized(MealUtility.listOperations){
+                    MealUtility.sessions.add(session);
+                }
 
                 out.println("<!DOCTYPE html>\n" +
                         "<html lang=\"en\">\n" +

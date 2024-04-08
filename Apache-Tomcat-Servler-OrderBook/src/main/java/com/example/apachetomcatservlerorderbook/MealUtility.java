@@ -16,8 +16,9 @@ public class MealUtility {
     public static List<HashMap<String,Integer>> foodOnOfferAndNumber = new ArrayList<>();
 
     public static String days[] = {"monday","tuesday","wednesday","thursday","friday"};
-    static final Object blockerDelete = new Object();
-    static final Object blockerUpdate = new Object();
+    public static final Object blockerDelete = new Object();
+    public static final Object blockerUpdate = new Object();
+    public static final Object listOperations = new Object();
 
     public static String password;
 
@@ -27,7 +28,7 @@ public class MealUtility {
         for(int i = 0; i < days.length;i++){
             try {
                 br = new BufferedReader(
-                        new FileReader("C:\\Users\\jonci\\Desktop\\WEBHW2\\Apache-Tomcat-Servler-OrderBook\\src\\main\\java\\com\\example\\apachetomcatservlerorderbook\\weekday_meals\\"+days[i] + ".txt"));
+                        new FileReader("apsolutna_putanja_foldera_sa_txt_fajlovima\\"+days[i] + ".txt"));
                 String line;
                 HashMap<String,Integer> hmTmp = new HashMap<>();
                 while((line = br.readLine()) != null){
@@ -86,7 +87,7 @@ public class MealUtility {
     public static void loadPassoword(){
         String tmpPassword;
         try {
-            BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\jonci\\Desktop\\WEBHW2\\Apache-Tomcat-Servler-OrderBook\\src\\main\\java\\com\\example\\apachetomcatservlerorderbook\\password.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("apsolutna_putanja\\password.txt"));
             tmpPassword = br.readLine();
             br.close();
         } catch (FileNotFoundException e) {
@@ -120,7 +121,9 @@ public class MealUtility {
 
     public static void cleanSessions(){
         for (HttpSession session : sessions) {
-            session.invalidate();
+            synchronized(listOperations){
+                session.invalidate();    
+            }
         }
         sessions.clear();
     }
